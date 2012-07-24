@@ -1,0 +1,26 @@
+Moodle Engagement Analytics for Moodle 2
+
+ * ABOUT *
+
+<TODO>
+
+This plugin was designed for Moodle version 2.2 and upwards
+
+ * CREDITS *
+
+Code: Adam Olley <adam.olley@netspot.com.au>
+Code: Ashley Holman <ashley.holman@netspot.com.au>
+Concept: Phillip Dawson <phillip.dawson@monash.edu>
+Indicator Algorithms: Phillip Dawson <phillip.dawson@monash.edu>
+
+ * INSTALLATION INSTRUCTIONS *
+
+ * BUGS / ISSUES / TODO *
+
+https://github.com/netspotau/moodle-report_analytics/issues
+
+ * HOMEPAGE / GITHUB *
+
+http://github.com/netspotau/moodle-block_analytics
+http://github.com/netspotau/moodle-mod_analytics
+http://github.com/netspotau/moodle-report_analytics

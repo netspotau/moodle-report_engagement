@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="report/analytics/db" VERSION="20120614" COMMENT="XMLDB file for Moodle report/analytics"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
+>
+  <TABLES>
+    <TABLE NAME="report_analytics" COMMENT="indicator weightings">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" SEQUENCE="true" NEXT="course"/>
+        <FIELD NAME="course" TYPE="int" LENGTH="10" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="id" NEXT="indicator"/>
+        <FIELD NAME="indicator" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" PREVIOUS="course" NEXT="weight"/>
+        <FIELD NAME="weight" TYPE="number" LENGTH="10" DECIMALS="2" NOTNULL="true" UNSIGNED="true" DEFAULT="0" SEQUENCE="false" PREVIOUS="indicator" NEXT="configdata"/>
+        <FIELD NAME="configdata" TYPE="text" LENGTH="small" NOTNULL="false" SEQUENCE="false" COMMENT="A serialized blob of configuration data for this analytics indicator instance." PREVIOUS="weight"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id" COMMENT="Primary key for analytics"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="course-indicator" UNIQUE="true" FIELDS="course, indicator"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
