@@ -26,7 +26,7 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/pluginlib.php');
 
-class plugintype_analyticsindicator extends plugintype_base implements plugin_information {
+class plugininfo_analyticsindicator extends plugininfo_base {
 
     public function is_enabled() {
 
