@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -19,8 +18,7 @@
 /**
  * This file is used to manage analytics indicators
  *
- * @package    report
- * @subpackage analytics
+ * @package    report_analytics
  * @copyright  2012 NetSpot Pty Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -40,11 +38,11 @@ $PAGE->set_context($context);
 if ($context->contextlevel == CONTEXT_COURSE) {
     $PAGE->set_pagelayout('incourse');
 } else {
-    //if at sitelevel, setup adminexternalpage?
+    // If at sitelevel, setup adminexternalpage?
     $PAGE->set_pagelayout('admin');
 }
 
-/// Security: make sure we're allowed to do this operation
+// Security: make sure we're allowed to do this operation.
 if ($context->contextlevel == CONTEXT_COURSE) {
     $course = $DB->get_record('course', array('id' => $context->instanceid), '*', MUST_EXIST);
     require_login($course, false);
@@ -57,7 +55,7 @@ if ($context->contextlevel == CONTEXT_COURSE) {
 $PAGE->navbar->add(get_string('pluginname', 'report_analytics'));
 $PAGE->navbar->add(get_string('manageindicators', 'report_analytics'), $url);
 
-/// Display page header
+// Display page header.
 $PAGE->set_title(get_string('pluginname', 'report_analytics'));
 $PAGE->set_heading(get_string('pluginname', 'report_analytics'));
 echo $OUTPUT->header();
@@ -65,9 +63,11 @@ echo $OUTPUT->heading(get_string('manageindicators', 'report_analytics'));
 
 $renderer = $PAGE->get_renderer('report_analytics');
 if (false) {
+    // This is where we'll display stuff for the course-level indicator toggling.
+    echo '';
 } else {
-    //TODO: Fetching indicator data will need to obey heirarchy in future
-    //      Need a table for course specific settings...
+    // TODO: Fetching indicator data will need to obey heirarchy in future...
+    // Need a table for course specific settings...
     $pluginman = plugin_manager::instance();
     $instances = get_plugin_list('analyticsindicator');
     echo $renderer->display_indicator_list($pluginman, $instances);

@@ -17,15 +17,15 @@
 /**
  * Displays indicator reports for a chosen course
  *
- * @package    report
- * @subpackage analytics
+ * @package    report_analytics
  * @copyright  2012 NetSpot Pty Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require(dirname(__FILE__).'/../../config.php');
+require_once($CFG->dirroot . '/report/analytics/locallib.php');
 
-$id = optional_param('id', 0, PARAM_INT);// Course ID
+$id = optional_param('id', 0, PARAM_INT); // Course ID.
 $userid = optional_param('userid', 0, PARAM_INT);
 
 $pageparams = array('id' => $id);
@@ -54,7 +54,8 @@ require_capability('report/analytics:view', $context);
 if (!$userid) {
     add_to_log($course->id, "course", "report analytics", "report/analytics/index.php?id=$course->id", $course->id);
 } else {
-    add_to_log($course->id, "course", "report analytics", "report/analytics/index.php?id=$course->id&userid=$user->id", $course->id);
+    add_to_log($course->id, "course", "report analytics",
+        "report/analytics/index.php?id=$course->id&userid=$user->id", $course->id);
 }
 
 $stradministration = get_string('administration');
@@ -73,21 +74,27 @@ echo $OUTPUT->heading(get_string($heading, 'report_analytics', $info));
 
 $pluginman = plugin_manager::instance();
 $indicators = get_plugin_list('analyticsindicator');
+foreach ($indicators as $name => $path) {
+    $plugin = $pluginman->get_plugin_info('analyticsindicator_'.$name);
+    if (!$plugin->is_enabled()) {
+        unset($indicators[$name]);
+    }
+}
 
 $weightings = $DB->get_records_menu('report_analytics', array('course' => $id), '', 'indicator, weight');
 
 $data = array();
-if (!$userid) { //course report
+if (!$userid) { // Course report.
     foreach ($indicators as $name => $path) {
         if (file_exists("$path/indicator.class.php")) {
             require_once("$path/indicator.class.php");
             $classname = "indicator_$name";
             $indicator = new $classname($id);
-            $indicatorrisks = $indicator->get_course_risks($id);
+            $indicatorrisks = $indicator->get_course_risks();
             $weight = isset($weightings[$name]) ? $weightings[$name] : 0;
             $total = 0;
             foreach ($indicatorrisks as $_user => $risk) {
-                $data[$_user]["indicator_$name"]['raw'] = $risk;
+                $data[$_user]["indicator_$name"]['raw'] = $risk->risk;
                 $data[$_user]["indicator_$name"]['weight'] = $weight;
             }
         }
@@ -106,7 +113,7 @@ if (!$userid) { //course report
     }
 
     echo $renderer->course_report(array_keys($indicators), $data);
-} else { //user report
+} else { // User report.
     foreach ($indicators as $name => $path) {
         if (file_exists("$path/indicator.class.php")) {
             require_once("$path/indicator.class.php");
@@ -115,9 +122,7 @@ if (!$userid) { //course report
             $indicatorrisks = $indicator->get_risk($userid, $id);
             $weight = isset($weightings[$name]) ? $weightings[$name] : 0;
             foreach ($indicatorrisks as $risk) {
-                $data["indicator_$name"] = array(
-                    'risk' => $risk * $weight,
-                );
+                $data["indicator_$name"] = $risk;
             }
         }
     }

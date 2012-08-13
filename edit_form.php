@@ -23,7 +23,7 @@
  */
 
 if (!defined('MOODLE_INTERNAL')) {
-    die('Direct access to this script is forbidden.');    ///  It must be included from a Moodle page
+    die('Direct access to this script is forbidden.');    // It must be included from a Moodle page.
 }
 
 require_once($CFG->libdir.'/formslib.php');
@@ -38,7 +38,7 @@ class report_analytics_edit_form extends moodleform {
 
         $mform->addElement('hidden', 'id', $this->_customdata['id']);
 
-        //TODO: general course-level report settings
+        // TODO: general course-level report settings.
         $mform->addElement('header', 'general', get_string('pluginname', 'report_analytics'));
 
         $mform->addElement('header', 'weightings', get_string('weighting', 'report_analytics'));
@@ -47,7 +47,8 @@ class report_analytics_edit_form extends moodleform {
             $grouparray = array();
             $grouparray[] =& $mform->createElement('text', "weighting_$name", '', array('size' => 3));
             $grouparray[] =& $mform->createElement('static', '', '', '%');
-            $mform->addGroup($grouparray, "weight_group_$name", get_string('pluginname', "analyticsindicator_$name"), '&nbsp;', false);
+            $mform->addGroup($grouparray, "weight_group_$name", get_string('pluginname', "analyticsindicator_$name"),
+                        '&nbsp;', false);
         }
 
         $pluginman = plugin_manager::instance();
@@ -67,8 +68,8 @@ class report_analytics_edit_form extends moodleform {
         $this->add_action_buttons();
     }
 
-    // form verification
-    function validation($data) {
+    // Form verification.
+    public function validation($data) {
         $mform =& $this->_form;
 
         $errors = array();

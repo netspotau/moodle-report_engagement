@@ -26,7 +26,7 @@ require_once(dirname(__FILE__).'/../../config.php');
 require_once(dirname(__FILE__).'/edit_form.php');
 require_once(dirname(__FILE__).'/locallib.php');
 
-$id = required_param('id', PARAM_INT); // Course ID
+$id = required_param('id', PARAM_INT); // Course ID.
 $url = new moodle_url('/report/analytics/edit.php', array('id' => $id));
 $reporturl = new moodle_url('/report/analytics/index.php', array('id' => $id));
 $PAGE->set_url($url);
@@ -53,6 +53,7 @@ $mform = new report_analytics_edit_form(null, array('id' => $id, 'indicators' =>
 
 $message = '';
 if ($mform->is_cancelled()) {
+    redirect(new moodle_url('/report/analytics/index.php', array('id' => $id)));
 } else if ($formdata = $mform->get_data()) {
     $message = $OUTPUT->notification(get_string('changessaved'), 'notifysuccess');
     $weights = array();
@@ -61,9 +62,9 @@ if ($mform->is_cancelled()) {
         $weights[$indicator] = isset($formdata->$key) ? $formdata->$key : 0;
     }
 
-    //TODO: Process generic settings
+    // TODO: Process generic settings.
 
-    // Process thresholds and other indicator specific settings
+    // Process thresholds and other indicator specific settings.
     $configdata = array();
     foreach (array_keys($indicators) as $indicator) {
         $indicatorfile = "$CFG->dirroot/mod/analytics/indicator/$indicator/locallib.php";
@@ -76,7 +77,7 @@ if ($mform->is_cancelled()) {
     report_analytics_update_indicator($id, $weights, $configdata);
 }
 
-// Get current values and populate form
+// Get current values and populate form.
 $data = array();
 if ($indicators = $DB->get_records('report_analytics', array('course' => $id))) {
     foreach ($indicators as $indicator) {

@@ -17,8 +17,7 @@
 /**
  * Output rendering of analytics report
  *
- * @package    report
- * @subpackage analtyics
+ * @package    report_analytics
  * @copyright  2012 NetSpot Pty Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -51,7 +50,8 @@ class plugintype_analyticsindicator extends plugintype_base implements plugin_in
 function report_analytics_sort_indicators($a, $b) {
     global $SESSION;
     $tsort = required_param('tsort', PARAM_ALPHANUMEXT);
-    $sort = isset($SESSION->flextable['analytics-course-report']->sortby[$tsort]) ? $SESSION->flextable['analytics-course-report']->sortby[$tsort] : SORT_DESC;
+    $sort = isset($SESSION->flextable['analytics-course-report']->sortby[$tsort]) ?
+                $SESSION->flextable['analytics-course-report']->sortby[$tsort] : SORT_DESC;
     if ($a[$tsort] == $b[$tsort]) {
         return 0;
     }
@@ -64,14 +64,22 @@ function report_analytics_sort_indicators($a, $b) {
 
 function report_analytics_sort_risks($a, $b) {
     global $SESSION;
-    $sort = isset($SESSION->flextable['analytics-course-report']->sortby['total']) ? $SESSION->flextable['analytics-course-report']->sortby['total'] : SORT_DESC;
-    if (array_sum($a) == array_sum($b)) {
+    $sort = isset($SESSION->flextable['analytics-course-report']->sortby['total']) ?
+                $SESSION->flextable['analytics-course-report']->sortby['total'] : SORT_DESC;
+    $asum = $bsum = 0;
+    foreach ($a as $name => $values) {
+        $asum += $values['raw'] * $values['weight'];
+    }
+    foreach ($b as $name => $values) {
+        $bsum += $values['raw'] * $values['weight'];
+    }
+    if ($asum == $bsum) {
         return 0;
     }
     if ($sort != SORT_ASC) {
-        return array_sum($a) < array_sum($b) ? -1 : 1;
+        return $asum < $bsum ? -1 : 1;
     } else {
-        return array_sum($a) > array_sum($b) ? -1 : 1;
+        return $asum > $bsum ? -1 : 1;
     }
 }
 

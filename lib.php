@@ -17,8 +17,8 @@
 /**
  * Libs, public API.
  *
- * @package    report
- * @subpackage analytics
+ * @package    report_analytics
+ * @author     Adam Olley <adam.olley@netspot.com.au>
  * @copyright  2012 NetSpot Pty Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
@@ -45,23 +45,25 @@ function report_analytics_get_course_summary($courseid) {
 
     $risks = array();
 
-    //TODO: We want this to rely on enabled indicators in the course...
+    // TODO: We want this to rely on enabled indicators in the course...
     require_once($CFG->libdir.'/pluginlib.php');
+    require_once($CFG->dirroot . '/report/analytics/locallib.php');
     $pluginman = plugin_manager::instance();
     $instances = get_plugin_list('analyticsindicator');
     $weightings = $DB->get_records_menu('report_analytics', array('course' => $courseid), '', 'indicator, weight');
     foreach ($instances as $name => $path) {
-        if (file_exists("$path/indicator.class.php")) {
+        $plugin = $pluginman->get_plugin_info('analyticsindicator_'.$name);
+        if ($plugin->is_enabled() && file_exists("$path/indicator.class.php")) {
             require_once("$path/indicator.class.php");
             $classname = "indicator_$name";
             $indicator = new $classname($courseid);
-            $indicatorrisks = $indicator->get_course_risks($courseid);
+            $indicatorrisks = $indicator->get_course_risks();
             $weight = isset($weightings[$name]) ? $weightings[$name] : 0;
             foreach ($indicatorrisks as $userid => $risk) {
                 if (!isset($risks[$userid])) {
                     $risks[$userid] = 0;
                 }
-                $risks[$userid] += $risk * $weight;
+                $risks[$userid] += $risk->risk * $weight;
             }
         }
     }
@@ -77,12 +79,19 @@ function report_analytics_get_course_summary($courseid) {
  */
 function report_analytics_get_risk_level($risk) {
     global $DB;
-    //TODO: accept some instance of an overall record for the course...
+    // TODO: accept some instance of an overall record for the course...
     return $risk == 0 ? 0 : ceil($risk * 100 / 20) - 1;
 }
 
+/**
+ * Is an indicator an analytics core supported indicator?
+ *
+ * @param string $indicator the indicator shortname
+ * @access public
+ * @return bool true if a core indicator, otherwise false
+ */
 function report_analytics_is_core_indicator($indicator) {
-    $core = array('login', 'assessment');
+    $core = array('login', 'assessment', 'forum');
     $core = array_flip($core);
     return isset($core[$indicator]);
 }
@@ -104,4 +113,22 @@ function report_analytics_page_type_list($pagetype, $parentcontext, $currentcont
         'report-analytics-user'     => get_string('page-report-analytics-user',  'report_analytics'),
     );
     return $array;
+}
+
+function report_analytics_cron() {
+    global $DB;
+
+    $cachettl = get_config('analytics', 'cachettl');
+    if (!$cachettl) {
+        // Default to 5 mins if not configured.
+        $cachettl = 300;
+    }
+
+    $now = time();
+    $expirytime = $now - $cachettl;
+
+    // Delete all cache records older than $expirytime.
+    $DB->delete_records_select('analytics_cache', "timemodified < $expirytime");
+
+    return true;
 }

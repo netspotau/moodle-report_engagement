@@ -17,17 +17,17 @@
 /**
  * Report settings
  *
- * @package    report
- * @subpackage analytics
+ * @package    report_analytics
  * @copyright  NetSpot Pty Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-$ADMIN->add('reports', new admin_externalpage('reportanalytics', get_string('pluginname', 'report_analytics'), "$CFG->wwwroot/report/analytics/index.php",'report/analytics:view'));
+$ADMIN->add('reports', new admin_externalpage('reportanalytics', get_string('pluginname', 'report_analytics'),
+                                              "$CFG->wwwroot/report/analytics/index.php", 'report/analytics:view'));
 
-// no report settings
+// No report settings.
 $url = new moodle_url('/report/analytics/manage_indicators.php', array('contextid' => SYSCONTEXTID));
-$settings = new admin_externalpage('reportanalyticsindicators', get_string('pluginname','report_analytics'), $url, 'report/analytics:manage');
-
+$settings = new admin_externalpage('reportanalyticsindicators',
+                                   get_string('pluginname', 'report_analytics'), $url, 'report/analytics:manage');

@@ -27,20 +27,5 @@ function xmldb_report_analytics_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
-    if ($oldversion < 2012061400) {
-        if (!$dbman->table_exists('report_analytics_weighting')) {
-            $dbman->install_one_table_from_xmldb_file($CFG->dirroot.'/report/analytics/db/install.xml', 'report_analytics_weighting');
-        }
-        upgrade_plugin_savepoint(true, 2012061400, 'report', 'analytics');
-    }
-
-    if ($oldversion < 2012062000) {
-        if ($dbman->table_exists('report_analytics_weighting')) {
-            $table = new xmldb_table('report_analytics_weighting');
-            $field = new xmldb_field('configdata', XMLDB_TYPE_TEXT, 'small', null, null, null, null, 'weight');
-            $dbman->add_field($table, $field);
-            $dbman->rename_table($table, 'report_analytics');
-        }
-        upgrade_plugin_savepoint(true, 2012062000, 'report', 'analytics');
-    }
+    return true;
 }

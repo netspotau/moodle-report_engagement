@@ -142,7 +142,8 @@ class report_analytics_renderer extends plugin_renderer_base {
             $row->attributes['class'] = 'type-' . $plugin->type . ' name-' . $plugin->type . '_' . $plugin->name;
 
             if ($this->page->theme->resolve_image_location('icon', $plugin->type . '_' . $plugin->name)) {
-                $icon = $this->output->pix_icon('icon', '', $plugin->type . '_' . $plugin->name, array('class' => 'smallicon pluginicon'));
+                $icon = $this->output->pix_icon('icon', '', $plugin->type . '_' . $plugin->name,
+                            array('class' => 'smallicon pluginicon'));
             } else {
                 $icon = $this->output->pix_icon('spacer', '', 'moodle', array('class' => 'smallicon pluginicon noicon'));
             }
@@ -196,12 +197,12 @@ class report_analytics_renderer extends plugin_renderer_base {
     }
 
     public function user_report($indicators, $data) {
-        global $CFG, $OUTPUT;
+        global $CFG;
         $html = html_writer::start_tag('div', array('id' => 'report-analytics_userreport'));
         foreach ($indicators as $indicator) {
             require_once("$CFG->dirroot/mod/analytics/indicator/$indicator/renderer.php");
             $renderer = $this->page->get_renderer("analyticsindicator_$indicator");
-            $html .= $OUTPUT->heading(get_string('pluginname', "analyticsindicator_$indicator"), 3, 'userreport_heading');
+            $html .= $this->output->heading(get_string('pluginname', "analyticsindicator_$indicator"), 1, 'userreport_heading');
             $html .= $renderer->user_report($data["indicator_$indicator"]);
         }
         $html .= html_writer::end_tag('div');
