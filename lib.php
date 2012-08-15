@@ -50,7 +50,19 @@ function report_engagement_get_course_summary($courseid) {
     require_once($CFG->dirroot . '/report/engagement/locallib.php');
     $pluginman = plugin_manager::instance();
     $instances = get_plugin_list('engagementindicator');
-    $weightings = $DB->get_records_menu('report_engagement', array('course' => $courseid), '', 'indicator, weight');
+    if (!$weightings = $DB->get_records_menu('report_engagement', array('course' => $courseid), '', 'indicator, weight')) {
+        // Setup default weightings, all equal.
+        $weight = sprintf('%.2f', 1 / count($instances));
+        foreach ($instances as $name => $path) {
+            $record = new stdClass();
+            $record->course = $courseid;
+            $record->indicator = $name;
+            $record->weight = $weight;
+            $record->configdata = null;
+            $wid = $DB->insert_record('report_engagement', $record);
+            $weightings[$name] = $weight;
+        }
+    }
     foreach ($instances as $name => $path) {
         $plugin = $pluginman->get_plugin_info('engagementindicator_'.$name);
         if ($plugin->is_enabled() && file_exists("$path/indicator.class.php")) {
