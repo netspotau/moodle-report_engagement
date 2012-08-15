@@ -15,7 +15,7 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Output rendering of analytics report
+ * Output rendering of engagement report
  *
  * @package    report
  * @subpackage analtyics
@@ -26,14 +26,14 @@
 defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/pluginlib.php');
-require_once($CFG->dirroot . '/report/analytics/locallib.php');
-require_once($CFG->dirroot . '/mod/analytics/indicator/rendererbase.php');
+require_once($CFG->dirroot . '/report/engagement/locallib.php');
+require_once($CFG->dirroot . '/mod/engagement/indicator/rendererbase.php');
 require_once($CFG->libdir . '/tablelib.php');
 
 /**
- * Rendering methods for the analytics reports
+ * Rendering methods for the engagement reports
  */
-class report_analytics_renderer extends plugin_renderer_base {
+class report_engagement_renderer extends plugin_renderer_base {
 
     /**
      * course_report
@@ -49,14 +49,14 @@ class report_analytics_renderer extends plugin_renderer_base {
             return '';
         }
 
-        $table = new flexible_table('analytics-course-report');
-        $table->define_baseurl(new moodle_url('/report/analytics/index.php', array('id' => $COURSE->id)));
+        $table = new flexible_table('engagement-course-report');
+        $table->define_baseurl(new moodle_url('/report/engagement/index.php', array('id' => $COURSE->id)));
         $headers = array();
         $columns = array();
         $headers[] = get_string('username');
         $columns[] = 'username';
         foreach ($indicators as $indicator) {
-            $headers[] = get_string('pluginname', "analyticsindicator_$indicator");
+            $headers[] = get_string('pluginname', "engagementindicator_$indicator");
             $columns[] = "indicator_$indicator";
         }
         $headers[] = get_string('total');
@@ -73,7 +73,7 @@ class report_analytics_renderer extends plugin_renderer_base {
         }
         $table->column_class('total', 'total');
 
-        $table->set_attribute('id', 'analytics-course-report');
+        $table->set_attribute('id', 'engagement-course-report');
         $table->set_attribute('class', 'generaltable generalbox boxaligncenter boxwidthwide');
         $table->setup();
 
@@ -82,7 +82,7 @@ class report_analytics_renderer extends plugin_renderer_base {
 
             $displayname = fullname($DB->get_record('user', array('id' => $user)));
 
-            $url = new moodle_url('/report/analytics/index.php', array('id' => $COURSE->id, 'userid' => $user));
+            $url = new moodle_url('/report/engagement/index.php', array('id' => $COURSE->id, 'userid' => $user));
             $row[] = html_writer::link($url, $displayname);
             $total = 0;
             $total_raw = 0;
@@ -104,7 +104,7 @@ class report_analytics_renderer extends plugin_renderer_base {
             $table->add_data($row);
         }
 
-        $html = $this->output->notification(get_string('reportdescription', 'report_analytics'));
+        $html = $this->output->notification(get_string('reportdescription', 'report_engagement'));
         ob_start();
         $table->finish_output();
         $html .= ob_get_clean();
@@ -136,7 +136,7 @@ class report_analytics_renderer extends plugin_renderer_base {
         );
 
         foreach ($instances as $name => $path) {
-            $plugin = $pluginman->get_plugin_info('analyticsindicator_'.$name);
+            $plugin = $pluginman->get_plugin_info('engagementindicator_'.$name);
 
             $row = new html_table_row();
             $row->attributes['class'] = 'type-' . $plugin->type . ' name-' . $plugin->type . '_' . $plugin->name;
@@ -156,7 +156,7 @@ class report_analytics_renderer extends plugin_renderer_base {
             $displayname  = $icon . ' ' . $plugin->displayname . ' ' . $msg;
             $displayname = new html_table_cell($displayname);
 
-            if (report_analytics_is_core_indicator($name)) {
+            if (report_engagement_is_core_indicator($name)) {
                 $row->attributes['class'] .= ' standard';
                 $source = new html_table_cell(get_string('sourcestd', 'core_plugin'));
             } else {
@@ -198,11 +198,11 @@ class report_analytics_renderer extends plugin_renderer_base {
 
     public function user_report($indicators, $data) {
         global $CFG;
-        $html = html_writer::start_tag('div', array('id' => 'report-analytics_userreport'));
+        $html = html_writer::start_tag('div', array('id' => 'report-engagement_userreport'));
         foreach ($indicators as $indicator) {
-            require_once("$CFG->dirroot/mod/analytics/indicator/$indicator/renderer.php");
-            $renderer = $this->page->get_renderer("analyticsindicator_$indicator");
-            $html .= $this->output->heading(get_string('pluginname', "analyticsindicator_$indicator"), 1, 'userreport_heading');
+            require_once("$CFG->dirroot/mod/engagement/indicator/$indicator/renderer.php");
+            $renderer = $this->page->get_renderer("engagementindicator_$indicator");
+            $html .= $this->output->heading(get_string('pluginname', "engagementindicator_$indicator"), 1, 'userreport_heading');
             $html .= $renderer->user_report($data["indicator_$indicator"]);
         }
         $html .= html_writer::end_tag('div');

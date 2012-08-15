@@ -15,14 +15,14 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Upgrades for analytics
+ * Upgrades for engagement
  *
- * @package    report_analytics
+ * @package    report_engagement
  * @copyright  2012 NetSpot Pty Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-function xmldb_report_analytics_upgrade($oldversion) {
+function xmldb_report_engagement_upgrade($oldversion) {
     global $CFG, $DB;
 
     $dbman = $DB->get_manager();
