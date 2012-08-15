@@ -17,15 +17,14 @@
 /**
  * Capabilities
  *
- * @package    report
- * @subpackage analytics
+ * @package    report_engagement
  * @copyright  NetSpot Pty Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 $capabilities = array(
 
-    'report/analytics:manage' => array(
+    'report/engagement:manage' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'write',
         'contextlevel' => CONTEXT_COURSE,
@@ -34,7 +33,7 @@ $capabilities = array(
             'manager' => CAP_ALLOW
         ),
     ),
-    'report/analytics:view' => array(
+    'report/engagement:view' => array(
         'riskbitmask' => RISK_PERSONAL,
         'captype' => 'read',
         'contextlevel' => CONTEXT_COURSE,

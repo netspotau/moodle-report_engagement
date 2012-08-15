@@ -17,20 +17,19 @@
 /**
  * Strings
  *
- * @package    report
- * @subpackage analytics
+ * @package    report_engagement
  * @copyright  NetSpot Pty Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-$string['analytics:manage'] = 'Manage engagement analytics report';
-$string['analytics:view'] = 'View engagement analytics report';
-$string['coursereport'] = 'Engagement analytics for course: {$a->course}';
+$string['engagement:manage'] = 'Manage engagement analytics report';
+$string['engagement:view'] = 'View engagement analytics report';
+$string['coursereport'] = 'Engagement engagement for course: {$a->course}';
 $string['indicator'] = 'Indicator';
 $string['manageindicators'] = 'Manage indicators';
-$string['page-report-analytics-x'] = 'Any engagement analytics report';
-$string['page-report-analytics-index'] = 'Course engagement analytics report';
-$string['page-report-analytics-user'] = 'User course engagement analytics report';
+$string['page-report-engagement-x'] = 'Any engagement analytics report';
+$string['page-report-engagement-index'] = 'Course engagement analytics report';
+$string['page-report-engagement-user'] = 'User course engagement analytics report';
 $string['pluginname'] = 'Engagement analytics';
 $string['reportdescription'] = 'Scores are shown as "weighted score (raw score)"';
 $string['updatesettings'] = 'Update settings';

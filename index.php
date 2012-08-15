@@ -17,13 +17,13 @@
 /**
  * Displays indicator reports for a chosen course
  *
- * @package    report_analytics
+ * @package    report_engagement
  * @copyright  2012 NetSpot Pty Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 require(dirname(__FILE__).'/../../config.php');
-require_once($CFG->dirroot . '/report/analytics/locallib.php');
+require_once($CFG->dirroot . '/report/engagement/locallib.php');
 
 $id = optional_param('id', 0, PARAM_INT); // Course ID.
 $userid = optional_param('userid', 0, PARAM_INT);
@@ -33,34 +33,34 @@ if ($userid) {
     $pageparams['userid'] = $userid;
 }
 
-$PAGE->set_url('/report/analytics/index.php', $pageparams);
+$PAGE->set_url('/report/engagement/index.php', $pageparams);
 $PAGE->set_pagelayout('report');
 
 $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 if ($userid) {
     $user = $DB->get_record('user', array('id' => $userid), 'id, firstname, lastname, email', MUST_EXIST);
-    $PAGE->navbar->add(fullname($user), new moodle_url('/report/analytics/index.php', $pageparams));
+    $PAGE->navbar->add(fullname($user), new moodle_url('/report/engagement/index.php', $pageparams));
 }
 
 require_login($course);
 $context = context_course::instance($course->id);
 $PAGE->set_context($context);
-$updateurl = new moodle_url('/report/analytics/edit.php', array('id' => $id));
-$PAGE->set_button($OUTPUT->single_button($updateurl, get_string('updatesettings', 'report_analytics'), 'get'));
+$updateurl = new moodle_url('/report/engagement/edit.php', array('id' => $id));
+$PAGE->set_button($OUTPUT->single_button($updateurl, get_string('updatesettings', 'report_engagement'), 'get'));
 $PAGE->set_heading($course->fullname);
 
-require_capability('report/analytics:view', $context);
+require_capability('report/engagement:view', $context);
 
 if (!$userid) {
-    add_to_log($course->id, "course", "report analytics", "report/analytics/index.php?id=$course->id", $course->id);
+    add_to_log($course->id, "course", "report engagement", "report/engagement/index.php?id=$course->id", $course->id);
 } else {
-    add_to_log($course->id, "course", "report analytics",
-        "report/analytics/index.php?id=$course->id&userid=$user->id", $course->id);
+    add_to_log($course->id, "course", "report engagement",
+        "report/engagement/index.php?id=$course->id&userid=$user->id", $course->id);
 }
 
 $stradministration = get_string('administration');
 $strreports = get_string('reports');
-$renderer = $PAGE->get_renderer('report_analytics');
+$renderer = $PAGE->get_renderer('report_engagement');
 
 echo $OUTPUT->header();
 
@@ -70,18 +70,18 @@ $info->course = $course->shortname;
 if (isset($user)) {
     $info->user = fullname($user);
 }
-echo $OUTPUT->heading(get_string($heading, 'report_analytics', $info));
+echo $OUTPUT->heading(get_string($heading, 'report_engagement', $info));
 
 $pluginman = plugin_manager::instance();
-$indicators = get_plugin_list('analyticsindicator');
+$indicators = get_plugin_list('engagementindicator');
 foreach ($indicators as $name => $path) {
-    $plugin = $pluginman->get_plugin_info('analyticsindicator_'.$name);
+    $plugin = $pluginman->get_plugin_info('engagementindicator_'.$name);
     if (!$plugin->is_enabled()) {
         unset($indicators[$name]);
     }
 }
 
-$weightings = $DB->get_records_menu('report_analytics', array('course' => $id), '', 'indicator, weight');
+$weightings = $DB->get_records_menu('report_engagement', array('course' => $id), '', 'indicator, weight');
 
 $data = array();
 if (!$userid) { // Course report.
@@ -101,15 +101,15 @@ if (!$userid) { // Course report.
     }
 
     $tsort = optional_param('tsort', '', PARAM_ALPHANUMEXT);
-    if ($tsort && isset($SESSION->flextable['analytics-course-report'])) {
-        $settings = $SESSION->flextable['analytics-course-report'];
+    if ($tsort && isset($SESSION->flextable['engagement-course-report'])) {
+        $settings = $SESSION->flextable['engagement-course-report'];
         if ($tsort == 'total') {
-            uasort($data, 'report_analytics_sort_risks');
+            uasort($data, 'report_engagement_sort_risks');
         } else if (preg_match('/^indicator_(.*)/', $tsort, $matches)) {
-            uasort($data, 'report_analytics_sort_indicators');
+            uasort($data, 'report_engagement_sort_indicators');
         }
     } else {
-        uasort($data, 'report_analytics_sort_risks');
+        uasort($data, 'report_engagement_sort_risks');
     }
 
     echo $renderer->course_report(array_keys($indicators), $data);

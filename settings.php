@@ -17,17 +17,17 @@
 /**
  * Report settings
  *
- * @package    report_analytics
+ * @package    report_engagement
  * @copyright  NetSpot Pty Ltd
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die;
 
-$ADMIN->add('reports', new admin_externalpage('reportanalytics', get_string('pluginname', 'report_analytics'),
-                                              "$CFG->wwwroot/report/analytics/index.php", 'report/analytics:view'));
+$ADMIN->add('reports', new admin_externalpage('reportengagement', get_string('pluginname', 'report_engagement'),
+                                              "$CFG->wwwroot/report/engagement/index.php", 'report/engagement:view'));
 
 // No report settings.
-$url = new moodle_url('/report/analytics/manage_indicators.php', array('contextid' => SYSCONTEXTID));
-$settings = new admin_externalpage('reportanalyticsindicators',
-                                   get_string('pluginname', 'report_analytics'), $url, 'report/analytics:manage');
+$url = new moodle_url('/report/engagement/manage_indicators.php', array('contextid' => SYSCONTEXTID));
+$settings = new admin_externalpage('reportengagementindicators',
+                                   get_string('pluginname', 'report_engagement'), $url, 'report/engagement:manage');
