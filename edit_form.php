@@ -69,7 +69,7 @@ class report_engagement_edit_form extends moodleform {
     }
 
     // Form verification.
-    public function validation($data) {
+    public function validation($data, $files) {
         $mform =& $this->_form;
 
         $errors = array();
