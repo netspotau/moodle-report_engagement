@@ -36,6 +36,7 @@ $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 $context = context_course::instance($course->id);
 
 require_login($course);
+require_capability('report/engagement:manage', $context);
 
 $strpluginname = get_string('pluginname', 'report_engagement');
 
