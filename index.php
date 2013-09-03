@@ -25,7 +25,7 @@
 require(dirname(__FILE__).'/../../config.php');
 require_once($CFG->dirroot . '/report/engagement/locallib.php');
 
-$id = optional_param('id', 0, PARAM_INT); // Course ID.
+$id = required_param('id', PARAM_INT); // Course ID.
 $userid = optional_param('userid', 0, PARAM_INT);
 
 $pageparams = array('id' => $id);
