@@ -37,6 +37,7 @@ class report_engagement_edit_form extends moodleform {
         $indicators = $this->_customdata['indicators'];
 
         $mform->addElement('hidden', 'id', $this->_customdata['id']);
+        $mform->setType('id', PARAM_INT);
 
         // TODO: general course-level report settings.
         $mform->addElement('header', 'general', get_string('pluginname', 'report_engagement'));
@@ -49,6 +50,7 @@ class report_engagement_edit_form extends moodleform {
             $grouparray[] =& $mform->createElement('static', '', '', '%');
             $mform->addGroup($grouparray, "weight_group_$name", get_string('pluginname', "engagementindicator_$name"),
                         '&nbsp;', false);
+            $mform->setType("weighting_$name", PARAM_FLOAT);
         }
 
         $pluginman = plugin_manager::instance();
