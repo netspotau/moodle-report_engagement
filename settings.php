@@ -24,9 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$ADMIN->add('reports', new admin_externalpage('reportengagement', get_string('pluginname', 'report_engagement'),
-                                              "$CFG->wwwroot/report/engagement/index.php", 'report/engagement:view'));
-
 // No report settings.
 $url = new moodle_url('/report/engagement/manage_indicators.php', array('contextid' => SYSCONTEXTID));
 $settings = new admin_externalpage('reportengagementindicators',
