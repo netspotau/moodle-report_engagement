@@ -24,8 +24,8 @@
 
 defined('MOODLE_INTERNAL') || die;
 
-$plugin->version   = 2013090300;       // The current plugin version (Date: YYYYMMDDXX)
-$plugin->requires  = 2012112900;       // Requires this Moodle version
+$plugin->version   = 2013043000;       // The current plugin version (Date: YYYYMMDDXX)
+$plugin->requires  = 2014042400;       // Requires this Moodle version
 $plugin->component = 'report_engagement'; // Full name of the plugin (used for diagnostics).
 $plugin->dependencies = array('mod_engagement' => 2012031400);
 $plugin->cron      = 60;

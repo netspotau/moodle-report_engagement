@@ -38,7 +38,8 @@ $PAGE->set_pagelayout('report');
 
 $course = $DB->get_record('course', array('id' => $id), '*', MUST_EXIST);
 if ($userid) {
-    $user = $DB->get_record('user', array('id' => $userid), 'id, firstname, lastname, email', MUST_EXIST);
+    $namefields = get_all_user_name_fields();
+    $user = $DB->get_record('user', array('id' => $userid), 'id, email, '.implode(',', $namefields), MUST_EXIST);
     $PAGE->navbar->add(fullname($user), new moodle_url('/report/engagement/index.php', $pageparams));
 }
 

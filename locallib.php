@@ -26,27 +26,6 @@ defined('MOODLE_INTERNAL') || die();
 
 require_once($CFG->libdir . '/pluginlib.php');
 
-class plugininfo_engagementindicator extends plugininfo_base {
-
-    public function is_enabled() {
-
-        $enabled = self::get_enabled_engagementindicators();
-
-        return isset($enabled[$this->name]) && $enabled[$this->name]->visible;
-    }
-
-    protected function get_enabled_engagementindicators($disablecache = false) {
-        global $DB;
-        static $indicators = null;
-
-        if (is_null($indicators) or $disablecache) {
-            $indicators = $DB->get_records('engagement_indicator', null, 'name', 'name,visible');
-        }
-
-        return $indicators;
-    }
-}
-
 function report_engagement_sort_indicators($a, $b) {
     global $SESSION;
     $tsort = required_param('tsort', PARAM_ALPHANUMEXT);

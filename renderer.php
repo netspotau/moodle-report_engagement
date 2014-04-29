@@ -116,7 +116,7 @@ class report_engagement_renderer extends plugin_renderer_base {
      *
      * @return string HTML
      */
-    public function display_indicator_list(plugin_manager $pluginman, $instances) {
+    public function display_indicator_list(core_plugin_manager $pluginman, $instances) {
         if (empty($instances)) {
             return '';
         }
