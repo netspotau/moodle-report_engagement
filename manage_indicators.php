@@ -68,7 +68,7 @@ if (false) {
 } else {
     // TODO: Fetching indicator data will need to obey heirarchy in future...
     // Need a table for course specific settings...
-    $pluginman = plugin_manager::instance();
+    $pluginman = core_plugin_manager::instance();
     $instances = get_plugin_list('engagementindicator');
     echo $renderer->display_indicator_list($pluginman, $instances);
 }

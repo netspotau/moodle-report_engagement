@@ -53,7 +53,7 @@ class report_engagement_edit_form extends moodleform {
             $mform->setType("weighting_$name", PARAM_FLOAT);
         }
 
-        $pluginman = plugin_manager::instance();
+        $pluginman = core_plugin_manager::instance();
         $instances = get_plugin_list('engagementindicator');
         foreach ($indicators as $name => $path) {
             $plugin = $pluginman->get_plugin_info('engagementindicator_'.$name);

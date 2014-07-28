@@ -24,8 +24,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir . '/pluginlib.php');
-
 function report_engagement_sort_indicators($a, $b) {
     global $SESSION;
     $tsort = required_param('tsort', PARAM_ALPHANUMEXT);

@@ -25,7 +25,6 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-require_once($CFG->libdir . '/pluginlib.php');
 require_once($CFG->dirroot . '/report/engagement/locallib.php');
 require_once($CFG->dirroot . '/mod/engagement/indicator/rendererbase.php');
 require_once($CFG->libdir . '/tablelib.php');
@@ -147,7 +146,7 @@ class report_engagement_renderer extends plugin_renderer_base {
             } else {
                 $icon = $this->output->pix_icon('spacer', '', 'moodle', array('class' => 'smallicon pluginicon noicon'));
             }
-            if ($plugin->get_status() === plugin_manager::PLUGIN_STATUS_MISSING) {
+            if ($plugin->get_status() === core_plugin_manager::PLUGIN_STATUS_MISSING) {
                 $msg = html_writer::tag('span', get_string('status_missing', 'core_plugin'), array('class' => 'notifyproblem'));
                 $row->attributes['class'] .= ' missingfromdisk';
             } else {

@@ -26,7 +26,6 @@
 defined('MOODLE_INTERNAL') || die;
 
 // Since 2.4 we need to have the plugin class declared early.
-require_once($CFG->libdir.'/pluginlib.php');
 require_once($CFG->dirroot . '/report/engagement/locallib.php');
 
 /**
@@ -50,7 +49,7 @@ function report_engagement_get_course_summary($courseid) {
     $risks = array();
 
     // TODO: We want this to rely on enabled indicators in the course...
-    $pluginman = plugin_manager::instance();
+    $pluginman = core_plugin_manager::instance();
     $instances = get_plugin_list('engagementindicator');
     $weightings = $DB->get_records_menu('report_engagement', array('course' => $courseid), '', 'indicator, weight');
     if (!$weightings && count($instances)) {

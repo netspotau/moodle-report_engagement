@@ -73,7 +73,7 @@ if (isset($user)) {
 }
 echo $OUTPUT->heading(get_string($heading, 'report_engagement', $info));
 
-$pluginman = plugin_manager::instance();
+$pluginman = core_plugin_manager::instance();
 $indicators = get_plugin_list('engagementindicator');
 foreach ($indicators as $name => $path) {
     $plugin = $pluginman->get_plugin_info('engagementindicator_'.$name);
