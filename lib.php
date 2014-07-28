@@ -52,7 +52,8 @@ function report_engagement_get_course_summary($courseid) {
     // TODO: We want this to rely on enabled indicators in the course...
     $pluginman = plugin_manager::instance();
     $instances = get_plugin_list('engagementindicator');
-    if (!$weightings = $DB->get_records_menu('report_engagement', array('course' => $courseid), '', 'indicator, weight')) {
+    $weightings = $DB->get_records_menu('report_engagement', array('course' => $courseid), '', 'indicator, weight');
+    if (!$weightings && count($instances)) {
         // Setup default weightings, all equal.
         $weight = sprintf('%.2f', 1 / count($instances));
         foreach ($instances as $name => $path) {
