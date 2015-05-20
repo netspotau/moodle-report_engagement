@@ -41,7 +41,13 @@ class report_engagement_edit_form extends moodleform {
 
         // TODO: general course-level report settings.
         $mform->addElement('header', 'general', get_string('pluginname', 'report_engagement'));
-
+		// query date limits settings
+		$mform->addElement('advcheckbox', 'queryspecifydatetime', get_string('queryspecifydatetime', 'report_engagement'));
+		$mform->addElement('date_time_selector', 'querystartdatetime', get_string('querystartdatetime', 'report_engagement'));
+		$mform->addElement('date_time_selector', 'queryenddatetime', get_string('queryenddatetime', 'report_engagement'));		
+		$mform->disabledIf('querystartdatetime', 'queryspecifydatetime');
+		$mform->disabledIf('queryenddatetime', 'queryspecifydatetime');
+		
         $mform->addElement('header', 'weightings', get_string('weighting', 'report_engagement'));
         $mform->addElement('static', 'weightings_desc', get_string('indicator', 'report_engagement'));
         foreach ($indicators as $name => $path) {

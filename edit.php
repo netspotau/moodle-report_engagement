@@ -52,6 +52,14 @@ $PAGE->set_heading($course->fullname);
 $indicators = get_plugin_list('engagementindicator');
 $mform = new report_engagement_edit_form(null, array('id' => $id, 'indicators' => $indicators));
 
+// Generic settings
+$generic_settings = array('queryspecifydatetime', 'querystartdatetime', 'queryenddatetime');
+list($generic_settings_insql, $generic_settings_inparams) = $DB->get_in_or_equal($generic_settings, SQL_PARAMS_NAMED);
+$generic_settings_queryparams = array('courseid' => $id);
+$generic_settings_sql = "SELECT id, name, value FROM {report_engagement_generic} WHERE courseid = :courseid AND name $generic_settings_insql";
+$generic_settings_params = array_merge($generic_settings_inparams, $generic_settings_queryparams);
+$records_generic_settings = $DB->get_records_sql($generic_settings_sql, $generic_settings_params);
+
 $message = '';
 if ($mform->is_cancelled()) {
     redirect(new moodle_url('/report/engagement/index.php', array('id' => $id)));
@@ -63,7 +71,24 @@ if ($mform->is_cancelled()) {
         $weights[$indicator] = isset($formdata->$key) ? $formdata->$key : 0;
     }
 
-    // TODO: Process generic settings.
+    // Process generic settings.
+	foreach ($generic_settings as $setting) {
+		$record = new stdClass();
+		$record->name = $setting;
+		$record->value = $formdata->{"$setting"};
+		$record->courseid = $id;
+		foreach ($records_generic_settings as $recordid => $recordobj) {
+			if ($recordobj->name == $setting) {
+				$record->id = $recordid;
+				continue;
+			}
+		}
+		if (isset($record->id)) {
+			$DB->update_record('report_engagement_generic', $record);		
+		} else {
+			$DB->insert_record('report_engagement_generic', $record);
+		}
+	}
 
     // Process thresholds and other indicator specific settings.
     $configdata = array();
@@ -89,6 +114,15 @@ if ($indicators = $DB->get_records('report_engagement', array('course' => $id)))
         }
     }
 }
+// Generic settings
+foreach ($generic_settings as $setting) {
+	foreach ($records_generic_settings as $recordid => $recordobj) {
+		if ($recordobj->name == $setting) {
+			$data = array_merge($data, array($setting => $recordobj->value));
+		}
+	}
+}
+// Set form data
 $mform->set_data($data);
 
 add_to_log($course->id, 'course', 'report engagement edit', "report/engagement/edit.php?id=$id", $course->id);
