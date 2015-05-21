@@ -42,4 +42,4 @@ $string['weightingsumtoonehundred'] = 'The sum of weighting values must be equal
 $string['queryspecifydatetime'] = 'Limit query dates';
 $string['querystartdatetime'] = 'Ignore data before';
 $string['queryenddatetime'] = 'Ignore data after';
-
+$string['querylimitset'] = 'Query limit set: ';

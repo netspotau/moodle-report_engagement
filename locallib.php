@@ -37,6 +37,16 @@ function report_engagement_get_generic_settings_records($courseid) {
 	$generic_settings_params = array_merge($generic_settings_inparams, $generic_settings_queryparams);
 	return $DB->get_records_sql($generic_settings_sql, $generic_settings_params);
 }
+function report_engagement_get_generic_settings($courseid) {
+	$records = report_engagement_get_generic_settings_records($courseid);
+	$settings = array();
+	foreach ($records as $record) {
+		$setting = new stdClass();
+		$setting = $record;
+		$settings[$record->name] = $setting;
+	}
+	return $settings;
+}
 
 function report_engagement_sort_indicators($a, $b) {
     global $SESSION;
