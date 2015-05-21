@@ -52,14 +52,6 @@ $PAGE->set_heading($course->fullname);
 $indicators = get_plugin_list('engagementindicator');
 $mform = new report_engagement_edit_form(null, array('id' => $id, 'indicators' => $indicators));
 
-// Generic settings
-$generic_settings = array('queryspecifydatetime', 'querystartdatetime', 'queryenddatetime');
-list($generic_settings_insql, $generic_settings_inparams) = $DB->get_in_or_equal($generic_settings, SQL_PARAMS_NAMED);
-$generic_settings_queryparams = array('courseid' => $id);
-$generic_settings_sql = "SELECT id, name, value FROM {report_engagement_generic} WHERE courseid = :courseid AND name $generic_settings_insql";
-$generic_settings_params = array_merge($generic_settings_inparams, $generic_settings_queryparams);
-$records_generic_settings = $DB->get_records_sql($generic_settings_sql, $generic_settings_params);
-
 $message = '';
 if ($mform->is_cancelled()) {
     redirect(new moodle_url('/report/engagement/index.php', array('id' => $id)));
@@ -72,7 +64,9 @@ if ($mform->is_cancelled()) {
     }
 
     // Process generic settings.
-	foreach ($generic_settings as $setting) {
+	$generic_settings_list = report_engagement_get_generic_settings_list();
+	$records_generic_settings = report_engagement_get_generic_settings_records($id);
+	foreach ($generic_settings_list as $setting) {
 		$record = new stdClass();
 		$record->name = $setting;
 		$record->value = $formdata->{"$setting"};
@@ -115,7 +109,9 @@ if ($indicators = $DB->get_records('report_engagement', array('course' => $id)))
     }
 }
 // Generic settings
-foreach ($generic_settings as $setting) {
+$generic_settings_list = report_engagement_get_generic_settings_list();
+$records_generic_settings = report_engagement_get_generic_settings_records($id);
+foreach ($generic_settings_list as $setting) {
 	foreach ($records_generic_settings as $recordid => $recordobj) {
 		if ($recordobj->name == $setting) {
 			$data = array_merge($data, array($setting => $recordobj->value));

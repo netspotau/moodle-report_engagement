@@ -18,11 +18,25 @@
  * Output rendering of engagement report
  *
  * @package    report_engagement
- * @copyright  2012 NetSpot Pty Ltd
+ * @copyright  2012 NetSpot Pty Ltd, 2015 Macquarie University
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
+
+// Generic settings
+function report_engagement_get_generic_settings_list() {
+	return array('queryspecifydatetime', 'querystartdatetime', 'queryenddatetime');
+}
+function report_engagement_get_generic_settings_records($courseid) {
+	global $DB;
+	$generic_settings = report_engagement_get_generic_settings_list();
+	list($generic_settings_insql, $generic_settings_inparams) = $DB->get_in_or_equal($generic_settings, SQL_PARAMS_NAMED);
+	$generic_settings_queryparams = array('courseid' => $courseid);
+	$generic_settings_sql = "SELECT id, name, value FROM {report_engagement_generic} WHERE courseid = :courseid AND name $generic_settings_insql";
+	$generic_settings_params = array_merge($generic_settings_inparams, $generic_settings_queryparams);
+	return $DB->get_records_sql($generic_settings_sql, $generic_settings_params);
+}
 
 function report_engagement_sort_indicators($a, $b) {
     global $SESSION;
