@@ -109,14 +109,9 @@ if ($indicators = $DB->get_records('report_engagement', array('course' => $id)))
     }
 }
 // Generic settings
-$generic_settings_list = report_engagement_get_generic_settings_list();
-$records_generic_settings = report_engagement_get_generic_settings_records($id);
-foreach ($generic_settings_list as $setting) {
-	foreach ($records_generic_settings as $recordid => $recordobj) {
-		if ($recordobj->name == $setting) {
-			$data = array_merge($data, array($setting => $recordobj->value));
-		}
-	}
+$generic_settings = report_engagement_get_generic_settings($id);
+foreach ($generic_settings as $name => $setting) {
+	$data = array_merge($data, array($name => $setting->value));
 }
 // Set form data
 $mform->set_data($data);
