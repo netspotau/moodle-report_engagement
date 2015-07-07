@@ -27,5 +27,14 @@ function xmldb_report_engagement_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
+if ($oldversion < 2015052101) {
+	// Conditionally create table for report_engagement_generic.
+	if (!$dbman->table_exists('report_engagement_generic')) {
+		$dbman->install_one_table_from_xmldb_file($CFG->dirroot . '/report/engagement/db/install.xml', 'report_engagement_generic');
+	}
+	// Engagement savepoint reached.
+	upgrade_plugin_savepoint(true, 2015052101, 'report', 'engagement');
+}
+	
     return true;
 }

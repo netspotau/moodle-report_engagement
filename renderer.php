@@ -48,6 +48,9 @@ class report_engagement_renderer extends plugin_renderer_base {
             return '';
         }
 
+		// Load generic settings
+		$generic_settings = report_engagement_get_generic_settings($COURSE->id);
+		
         $table = new flexible_table('engagement-course-report');
         $table->define_baseurl(new moodle_url('/report/engagement/index.php', array('id' => $COURSE->id)));
         $headers = array();
@@ -104,6 +107,11 @@ class report_engagement_renderer extends plugin_renderer_base {
         }
 
         $html = $this->output->notification(get_string('reportdescription', 'report_engagement'));
+		if (isset($generic_settings['queryspecifydatetime']) && $generic_settings['queryspecifydatetime']->value) {
+			$html .= $this->output->notification(get_string('querylimitset', 'report_engagement') . 
+				date('Y-m-d H:i:s', $generic_settings['querystartdatetime']->value) . ' - ' . 
+				date('Y-m-d H:i:s', $generic_settings['queryenddatetime']->value));
+		}
         ob_start();
         $table->finish_output();
         $html .= ob_get_clean();
