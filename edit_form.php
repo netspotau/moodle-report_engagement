@@ -50,12 +50,14 @@ class report_engagement_edit_form extends moodleform {
 		
         $mform->addElement('header', 'weightings', get_string('weighting', 'report_engagement'));
         $mform->addElement('static', 'weightings_desc', get_string('indicator', 'report_engagement'));
+		$mform->addHelpButton('weightings_desc', 'indicator', 'report_engagement');
         foreach ($indicators as $name => $path) {
             $grouparray = array();
             $grouparray[] =& $mform->createElement('text', "weighting_$name", '', array('size' => 3));
             $grouparray[] =& $mform->createElement('static', '', '', '%');
             $mform->addGroup($grouparray, "weight_group_$name", get_string('pluginname', "engagementindicator_$name"),
                         '&nbsp;', false);
+			$mform->addHelpButton("weight_group_$name", 'pluginname', "engagementindicator_$name");
             $mform->setType("weighting_$name", PARAM_FLOAT);
         }
 
