@@ -27,5 +27,23 @@ function xmldb_report_engagement_upgrade($oldversion) {
 
     $dbman = $DB->get_manager();
 
+if ($oldversion < 2015052101) {
+	// Define table report_engagement_generic to be created.
+	$table = new xmldb_table('report_engagement_generic');
+	// Adding fields to table report_engagement_generic.
+	$table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+	$table->add_field('courseid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+	$table->add_field('name', XMLDB_TYPE_CHAR, '255', null, XMLDB_NOTNULL, null, null);
+	$table->add_field('value', XMLDB_TYPE_TEXT, null, null, null, null, null);
+	// Adding keys to table report_engagement_generic.
+	$table->add_key('primary', XMLDB_KEY_PRIMARY, array('id'));
+	// Conditionally launch create table for report_engagement_generic.
+	if (!$dbman->table_exists($table)) {
+		$dbman->create_table($table);
+	}
+	// Engagement savepoint reached.
+	upgrade_plugin_savepoint(true, 2015052101, 'report', 'engagement');
+}
+	
     return true;
 }

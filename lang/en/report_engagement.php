@@ -24,17 +24,24 @@
 
 $string['engagement:manage'] = 'Manage engagement analytics report';
 $string['engagement:view'] = 'View engagement analytics report';
-$string['coursereport'] = 'Engagement engagement for course: {$a->course}';
+$string['coursereport'] = 'Engagement for course: {$a->course}';
 $string['indicator'] = 'Indicator';
+$string['indicator_help'] = 'In the textboxes, enter the percentage contribution (whole number between 0-100) of the risk rating from each indicator to the total risk rating. The totals in this section must add to 100.';
+
 $string['manageindicators'] = 'Manage indicators';
 $string['page-report-engagement-x'] = 'Any engagement analytics report';
 $string['page-report-engagement-index'] = 'Course engagement analytics report';
 $string['page-report-engagement-user'] = 'User course engagement analytics report';
 $string['pluginname'] = 'Engagement analytics';
-$string['reportdescription'] = 'Scores are shown as "weighted score (raw score)"';
+$string['reportdescription'] = 'Numbers in parentheses are raw risk ratings for each indicator. Numbers outside parentheses are weighted risk ratings for each indicator - these are summed to give the total risk rating.';
 $string['updatesettings'] = 'Update settings';
 $string['userreport'] = 'Engagement analytics for {$a->user} in course: {$a->course}';
 $string['weighting'] = 'Weighting';
 $string['weighting_desc'] = 'Test';
 $string['weightingmustbenumeric'] = 'Weighting percentages must be a numeric value in the range 0~100';
 $string['weightingsumtoonehundred'] = 'The sum of weighting values must be equal to 100%';
+
+$string['queryspecifydatetime'] = 'Limit query dates';
+$string['querystartdatetime'] = 'Ignore data before';
+$string['queryenddatetime'] = 'Ignore data after';
+$string['querylimitset'] = 'Query limit set: ';
