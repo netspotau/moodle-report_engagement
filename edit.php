@@ -85,6 +85,16 @@ if ($indicators = $DB->get_records('report_engagement', array('course' => $id)))
         $data["weighting_{$indicator->indicator}"] = $indicator->weight * 100;
         $configdata = unserialize(base64_decode($indicator->configdata));
         if (is_array($configdata)) {
+			// Pre-process config data if necessary
+			$indicatorfile = "$CFG->dirroot/mod/engagement/indicator/{$indicator->indicator}/locallib.php";
+			if (file_exists($indicatorfile)) {
+				require_once($indicatorfile);
+				$func = "engagementindicator_{$indicator->indicator}_preprocess_configdata_for_edit_form";
+				if (function_exists($func)) {
+					$configdata = $func($configdata);
+				}
+			}
+			// Merge config data with form data
             $data = array_merge($data, $configdata);
         }
     }
