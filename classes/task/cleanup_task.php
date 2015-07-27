@@ -20,7 +20,7 @@
  * @package    report_engagement
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-namespace report_engagement;
+namespace report_engagement\task;
 
 /**
  * Simple task to delete old records.
