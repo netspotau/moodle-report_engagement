@@ -34,6 +34,7 @@ $string['page-report-engagement-index'] = 'Course engagement analytics report';
 $string['page-report-engagement-user'] = 'User course engagement analytics report';
 $string['pluginname'] = 'Engagement analytics';
 $string['reportdescription'] = 'Numbers in parentheses are raw risk ratings for each indicator. Numbers outside parentheses are weighted risk ratings for each indicator - these are summed to give the total risk rating.';
+$string['taskcleanup'] = 'Cleanup old report data';
 $string['updatesettings'] = 'Update settings';
 $string['userreport'] = 'Engagement analytics for {$a->user} in course: {$a->course}';
 $string['weighting'] = 'Weighting';

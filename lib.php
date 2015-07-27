@@ -128,21 +128,3 @@ function report_engagement_page_type_list($pagetype, $parentcontext, $currentcon
     );
     return $array;
 }
-
-function report_engagement_cron() {
-    global $DB;
-
-    $cachettl = get_config('engagement', 'cachettl');
-    if (!$cachettl) {
-        // Default to 5 mins if not configured.
-        $cachettl = 300;
-    }
-
-    $now = time();
-    $expirytime = $now - $cachettl;
-
-    // Delete all cache records older than $expirytime.
-    $DB->delete_records_select('engagement_cache', "timemodified < $expirytime");
-
-    return true;
-}

@@ -14,20 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Version info
- *
- * @package    report_engagement
- * @copyright  2012 NetSpot Pty Ltd
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
+defined('MOODLE_INTERNAL') || die();
 
-defined('MOODLE_INTERNAL') || die;
-
-$plugin->version   = 2015072700;
-$plugin->requires  = 2013101800;
-$plugin->component = 'report_engagement';
-$plugin->dependencies = array('mod_engagement' => 2015072700);
-$plugin->cron = 60;
-
-$plugin->maturity = MATURITY_STABLE;
+$tasks = array(
+    array(
+        'classname' => 'report_engagement\task\cleanup_task',
+        'blocking' => 0,
+        'minute' => '*',
+        'hour' => '*',
+        'day' => '*',
+        'dayofweek' => '*',
+        'month' => '*'
+    ),
+);
