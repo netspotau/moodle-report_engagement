@@ -41,3 +41,5 @@ $string['weighting'] = 'Weighting';
 $string['weighting_desc'] = 'Test';
 $string['weightingmustbenumeric'] = 'Weighting percentages must be a numeric value in the range 0~100';
 $string['weightingsumtoonehundred'] = 'The sum of weighting values must be equal to 100%';
+$string['eventreportviewed'] = 'Engagement analytics report viewed';
+$string['eventreportedited'] = 'Engagement analytics report edited';

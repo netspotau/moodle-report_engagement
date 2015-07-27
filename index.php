@@ -52,13 +52,6 @@ $PAGE->set_heading($course->fullname);
 
 require_capability('report/engagement:view', $context);
 
-if (!$userid) {
-    add_to_log($course->id, "course", "report engagement", "report/engagement/index.php?id=$course->id", $course->id);
-} else {
-    add_to_log($course->id, "course", "report engagement",
-        "report/engagement/index.php?id=$course->id&userid=$user->id", $course->id);
-}
-
 $stradministration = get_string('administration');
 $strreports = get_string('reports');
 $renderer = $PAGE->get_renderer('report_engagement');
@@ -131,3 +124,16 @@ if (!$userid) { // Course report.
 }
 
 echo $OUTPUT->footer();
+
+// Trigger a report viewed event.
+if (!$userid) {
+    $event = \report_engagement\event\report_viewed::create(array('context' => $context));
+} else {
+    $event = \report_engagement\event\report_viewed::create(array(
+        'context' => $context,
+        'other' => array(
+            'foruser' => $userid
+        )
+    ));
+}
+$event->trigger();

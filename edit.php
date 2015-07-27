@@ -101,9 +101,11 @@ if ($indicators = $DB->get_records('report_engagement', array('course' => $id)))
 }
 $mform->set_data($data);
 
-add_to_log($course->id, 'course', 'report engagement edit', "report/engagement/edit.php?id=$id", $course->id);
-
 echo $OUTPUT->header();
 echo $message;
 $mform->display();
 echo $OUTPUT->footer();
+
+// Trigger a report edited event.
+$event = \report_engagement\event\report_edited::create(array('context' => $context));
+$event->trigger();
