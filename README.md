@@ -14,8 +14,11 @@ git clone git://github.com/netspotau/moodle-report_engagement.git report/engagem
 Then add report/engagement to your gitignore.
 ### Mysql v.5.6 or lower
 To enable long keys generated automatically by engagement report table based on coursenames, add the following [lines](https://stackoverflow.com/questions/43379717/how-to-enable-large-index-in-mariadb-10) to etc/mysql/my.cnf file underneath the "[mysqld]" category 
+
 innodb_file_format   = Barracuda
+
 innodb_file_per_table  = 1 
+
 innodb_large_prefix = 1 
 
 ## Companion plugins
